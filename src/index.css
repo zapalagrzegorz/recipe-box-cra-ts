@@ -1,0 +1,105 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.recipesListElementsWrap {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.listRecipes {
+  border-radius: 4px;
+  border: 1px solid darkgray;
+  padding: 15px 15px 30px 15px;
+}
+
+.accordion-title {
+  transition: background-color .3s ease, color .3s ease;
+}
+
+.accordion-item.is-active .accordion-title {
+  background-color: #353535;
+  color: #fff;
+}
+
+.dialog__wrapper {
+  position: fixed;
+  padding: 5rem;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+ul {
+  margin: 0;
+  list-style: none;
+}
+
+.deleteDialogContent p,
+.preLine {
+  white-space: pre-line;
+}
+
+.strong {
+  font-weight: 600;
+}
+
+/* basic foundation xy grid */
+
+.grid-container {
+  padding-right: 0.625rem;
+  padding-left: 0.625rem;
+  max-width: 75rem;
+  margin: 0 auto;
+}
+
+@media print,
+screen and (min-width: 40em) {
+  .grid-container {
+    padding-right: 0.9375rem;
+    padding-left: 0.9375rem;
+  }
+}
+
+.grid-container.fluid {
+  padding-right: 0.625rem;
+  padding-left: 0.625rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+@media print,
+screen and (min-width: 40em) {
+  .grid-container.fluid {
+    padding-right: 0.9375rem;
+    padding-left: 0.9375rem;
+  }
+}
+
+.grid-container.full {
+  padding-right: 0;
+  padding-left: 0;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.grid-x {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.cell {
+  flex: 0 0 auto;
+  min-height: 0px;
+  min-width: 0px;
+  width: 100%;
+}
+
+.cell.auto {
+  flex: 1 1 0px;
+}
+
+.cell.shrink {
+  flex: 0 0 auto;
+}

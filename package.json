@@ -1,5 +1,6 @@
 {
   "name": "recipe-box",
+  "homepage": "https://zapalagrzegorz.github.io/recipe-box-cra-ts",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,13 +8,15 @@
     "@material-ui/icons": "^1.1.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "react-scripts-ts": "2.17.0"
+    "react-scripts-ts": "3.1.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "@babel/runtime": "7.0.0-beta.55",

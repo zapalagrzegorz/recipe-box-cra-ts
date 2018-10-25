@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { Recipe } from './Recipe';
+import Recipe from './Recipe';
 import { Dialog } from './Dialog';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,8 +11,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
-
-export class ListRecipes extends React.PureComponent<any, IListRecipesState> {
+export default class ListRecipes extends React.PureComponent<any, IListRecipesState> {
     constructor(props : any) {
         super(props);
         this.state = {
@@ -23,7 +22,7 @@ export class ListRecipes extends React.PureComponent<any, IListRecipesState> {
             recipesListElements: [],
             recipesList: {},
             recipeKey: '',
-            isModalOpen: false
+            isModalOpen: false,
         },
 
         this.handleDialog = this.handleDialog.bind(this);
@@ -129,6 +128,7 @@ export class ListRecipes extends React.PureComponent<any, IListRecipesState> {
         return (
             <div style={wrapStyle} className="grid-container">
                 <CssBaseline />
+                
                 <div className="grid-x">
                     <div className="cell small-12">
                         <Card>
@@ -146,6 +146,7 @@ export class ListRecipes extends React.PureComponent<any, IListRecipesState> {
                                 style={{ padding: '20px' }}
                             >
                                 <Button
+                                    id="addRecipeButton"
                                     variant="contained"
                                     color="primary"
                                     className="button"

@@ -5,18 +5,11 @@ interface IListRecipesState {
     recipeDirections: string,
     recipesListElements: JSX.Element[],
     recipesList : object,
-    recipeKey : string
+    recipeKey : string,
     isModalOpen : boolean
 }
 
-interface IRecipeProps {
-    title: string,
-    ingredients: string,
-    directions: string,
-    onButtonEditClick(event: any) : void
-    onButtonDeleteClick(event: any) : void,
-    classes? : any
-}
+
 
 interface IDialogProps {
     dialogType: string,

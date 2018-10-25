@@ -13,7 +13,14 @@ import Button from '@material-ui/core/Button';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditIcon from '@material-ui/icons/Edit';
 
-
+interface IRecipeProps {
+    title: string,
+    ingredients: string,
+    directions: string,
+    onButtonEditClick(event: any) : void
+    onButtonDeleteClick(event: any) : void,
+    classes? : any
+}
 
 const styles = (theme: any) => ({
     root: {
@@ -67,5 +74,6 @@ function RecipeUnstyled(props: IRecipeProps) {
     );
 }
 
-export let Recipe = withStyles(styles)(RecipeUnstyled);
+export default withStyles(styles)(RecipeUnstyled);
+
 

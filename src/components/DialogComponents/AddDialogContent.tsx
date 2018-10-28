@@ -1,3 +1,5 @@
+// / <reference path="../../../node_modules/@material-ui/core/index.d.ts" />
+
 import * as React from 'react';
 
 import DialogActions from '@material-ui/core/DialogActions';
@@ -5,50 +7,53 @@ import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import { CancelDialogButton } from './CancelDialogButton';
 import { SaveDialogButton } from '../SaveDialogButton';
+import { PropTypes } from 'node_modules/@material-ui/core/index';
 
 
-export const AddDialogContent = ({ hideDialog, handleInputChange, saveRecipe } : { hideDialog: any, handleInputChange: any, saveRecipe: any }) => {
+interface IAddDialogContentState  { 
+    hideDialog: Function, 
+    handleInputChange: React.ChangeEventHandler<HTMLInputElement>, 
+    saveRecipe: Function 
+}
+
+export const AddDialogContent = ({ hideDialog, handleInputChange, saveRecipe }: IAddDialogContentState ) => {
+    const textFieldProp = {
+        label: "Name",
+        type: "text",
+        fullWidth: true,
+        defaultValue: "",
+        onChange: handleInputChange,
+        margin : 'normal' as PropTypes.Margin
+    }
     return (
         <div>
             <DialogContent>
                 <TextField
                     autoFocus
-                    margin="normal"
-                    label="Name"
-                    type="text"
+                    {...textFieldProp}
                     id="name"
-                    fullWidth
                     name="changedRecipeName"
-                    defaultValue=""
-                    onChange={handleInputChange}
-                />;
-                <TextField
-                    margin="normal"
-                    label="Ingredients"
-                    type="text"
-                    id="ingredients"
-                    name="changedIngredients"
-                    defaultValue=""
-                    onChange={handleInputChange}
-                    fullWidth
                 />
                 <TextField
-                    margin="normal"
+                    {...textFieldProp}
+                    label="Ingredients"
+                    id="ingredients"
+                    name="changedIngredients"
+                />
+                <TextField
+                    {...textFieldProp}
                     label="Directions"
-                    type="text"
                     id="directions"
                     name="changedDirections"
-                    defaultValue=""
-                    onChange={handleInputChange}
-                    fullWidth
                 />
             </DialogContent>
             <DialogActions>
                 <SaveDialogButton
+                    id="addDialogContentSave"
                     saveRecipe={saveRecipe} />
                 <CancelDialogButton
                     hideDialog={hideDialog} />
             </DialogActions>
         </div>
-    );
+    )
 }

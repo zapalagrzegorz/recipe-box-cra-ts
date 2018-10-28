@@ -9,14 +9,24 @@ import { DeleteDialogContent } from './DialogComponents/DeleteDialogContent';
 import { EditDialogContent } from './DialogComponents/EditDialogContent';
 import { AddDialogContent } from './DialogComponents/AddDialogContent';
 
+interface IDialogProps {
+    dialogType: string,
+    oldRecipeName: string,
+    oldRecipeIngredients: string,
+    oldRecipeDirections: string,
+    hideDialog(): void,
+    updateRecipesList(): void,
+    recipesList: object,
+    recipeKey: string,
+    isModalOpen: boolean,
+}
 export class Dialog extends React.PureComponent<IDialogProps, any> {
-    constructor(props : any) {
+    constructor(props: any) {
         super(props);
         this.state = {
             changedRecipeName: '',
             changedIngredients: '',
             changedDirections: '',
-            dialogContent: '',
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -24,46 +34,6 @@ export class Dialog extends React.PureComponent<IDialogProps, any> {
         this.deleteRecipe = this.deleteRecipe.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-    }
-
-    componentDidUpdate(prevProps : any) {
-        if (this.props.dialogType !== prevProps.dialogType || 
-            this.props.oldRecipeName !== prevProps.oldRecipeName) {
-            let dialogContent: JSX.Element;
-            
-            switch (this.props.dialogType) {
-
-                case 'delete':
-                    dialogContent = <DeleteDialogContent
-                        recipeName={this.props.oldRecipeName}
-                        dialogIngredients={this.props.oldRecipeIngredients}
-                        directions={this.props.oldRecipeDirections}
-                        deleteRecipe={this.deleteRecipe}
-                        hideDialog={this.props.hideDialog} />
-                    break;
-
-                case 'edit':
-                    dialogContent = (<EditDialogContent
-                        recipeName={this.props.oldRecipeName}
-                        dialogIngredients={this.props.oldRecipeIngredients}
-                        directions={this.props.oldRecipeDirections}
-                        hideDialog={this.props.hideDialog}
-                        handleInputChange={this.handleInputChange}
-                        saveRecipe={this.saveRecipe} />);
-                    break;
-
-                case 'add':
-                    dialogContent = (<AddDialogContent
-                        hideDialog={this.props.hideDialog}
-                        handleInputChange={this.handleInputChange}
-                        saveRecipe={this.saveRecipe} />);
-                    break;
-                default:
-                    dialogContent = (<span></span>);
-                    break;
-            }
-            this.setState({ dialogContent });
-        }
     }
 
     openModal() {
@@ -74,7 +44,7 @@ export class Dialog extends React.PureComponent<IDialogProps, any> {
         this.setState({ modalIsOpen: false });
     }
 
-    handleInputChange(event : any) {
+    handleInputChange(event: any) {
         const target = event.target;
         const value = target.value;
         const name = target.name;
@@ -154,9 +124,25 @@ export class Dialog extends React.PureComponent<IDialogProps, any> {
                 >
                     {this.props.dialogType}
                 </DialogTitle>
+                {this.props.dialogType === 'add' && <AddDialogContent
+                    hideDialog={this.props.hideDialog}
+                    handleInputChange={this.handleInputChange}
+                    saveRecipe={this.saveRecipe} />}
 
-                {this.state.dialogContent}
+                {this.props.dialogType === 'delete' && <DeleteDialogContent
+                    recipeName={this.props.oldRecipeName}
+                    dialogIngredients={this.props.oldRecipeIngredients}
+                    directions={this.props.oldRecipeDirections}
+                    deleteRecipe={this.deleteRecipe}
+                    hideDialog={this.props.hideDialog} />}
 
+                {this.props.dialogType === 'edit' && <EditDialogContent
+                    recipeName={this.props.oldRecipeName}
+                    dialogIngredients={this.props.oldRecipeIngredients}
+                    directions={this.props.oldRecipeDirections}
+                    hideDialog={this.props.hideDialog}
+                    handleInputChange={this.handleInputChange}
+                    saveRecipe={this.saveRecipe} />}
             </DialogMaterial>
         );
     }

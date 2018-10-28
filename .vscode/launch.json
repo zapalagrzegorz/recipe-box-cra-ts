@@ -6,6 +6,17 @@
     
     "configurations": [
       {
+        "name": "Chrome debug",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceRoot}/src",
+        "userDataDir": "${workspaceRoot}/.vscode/chrome",
+        "sourceMapPathOverrides": {
+          "webpack:///src/*": "${webRoot}/*"
+        }
+      },
+      {
         "name": "Debug CRA Tests",
         "type": "node",
         "request": "launch",

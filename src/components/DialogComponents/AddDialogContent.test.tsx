@@ -1,39 +1,59 @@
-// import * as React from 'react';
+import * as React from 'react';
 // import { Button } from '@material-ui/core';
-// import { shallow} from 'enzyme';
+import { mount} from 'enzyme';
 // import { Dialog } from './Dialog';
-// import { AddDialogContent } from './AddDialogContent';
+import { AddDialogContent } from './AddDialogContent';
+import TextField from '@material-ui/core/TextField';
+// import { SaveDialogButton } from '../SaveDialogButton';
 // import { createShallow, createMount } from '@material-ui/core/test-utils';
 
-// dialogType: string,
-//     oldRecipeName: string,
-//     oldRecipeIngredients: string,
-//     oldRecipeDirections: string,
-//     hideDialog() : void,
-//     updateRecipesList() : void,
-//     recipesList: object,
-//     recipeKey : string,
-//     isModalOpen: boolean,
+it('saveRecipe in AddDialogComponent updates LocalStorage', () => {
+    let recipesList: {};
+    const dialogProps = {
+        hideDialog: () => { },
+        // handleInputChange: () => { },
+        handleInputChange: function(event: any) {
+            // const target = event.target;
+            // const value = target.value;
+            // const name = target.name;
+        },
+        saveRecipe: function() {
+            // recipesList = JSON.parse(JSON.stringify(recipesList));
+            let newRecipe = { name: "", ingredients: "", directions: "" };    
+            recipesList[newRecipe.name] = newRecipe;
+            localStorage.setItem('recipesList', JSON.stringify(recipesList));
+        },
+    }
+    
+    const wrapper = mount((<AddDialogContent {...dialogProps} />));
+    expect(wrapper.find(TextField)).toHaveLength(3);
+    expect(wrapper.find('Input[id="name"]')).toHaveLength(1);
+
+    // wrapper.find('input[id="name"]').simulate('change', {currentTarget: {value: 'new recipe name'}});
+    // wrapper.find('input[id="name"]').getDOMNode().nodeValue =  'new recipe name';
 
 
+    // console.log(wrapper.find('input[id="name"]').setProps({value : "new recipe name"}));
+    // let input = wrapper.find('input[id="name"]');
+    // console.log(input..value)
 
-// it('passed props to Dialog', () => {
-    // const dialogProps = {
-    //     dialogType: 'add',
-    //     oldRecipeName: null,
-    //     oldRecipeIngredients: null,
-    //     oldRecipeDirections: null,
-    //     hideDialog: () => { },
-    //     updateRecipesList: () => { },
-    //     recipesList: {},
-    //     recipeKey: null,
-    //     isModalOpen: true,
-    // }
-    // const AddDialogProps = { hideDialog: ()=>{} , handleInputChange: ()=>{}, saveRecipe: ()=>{} }
-    // const addDialogContent = shallow(<AddDialogContent {...AddDialogProps} />);
-    // expect(dialog.find(Dialog)).toHaveLength(1);
-    // expect(dialog.find(Dialog).prop('dialogType')).toBe('add');
+    // console.log(wrapper.debug());
+    // expect(wrapper.find(SaveDialogButton)).toHaveLength(1);
+    // console.log(localStorage);
+    // wrapper.find(SaveDialogButton).simulate('click');
 
+    // tslint:disable-line
+    // expect(wrapper.find('input[id="name"]').props().value).toContain('new recipe name');
+    // expect(wrapper.find('input[id="name"]').value).toContain('new recipe name');
+
+    // wrapper.find('#name[name="changedRecipeName"]').le
+    // simulate('change', {target: {value: 'new recipe name'}});
     // console.log(dialog.debug());
-    // expect(dialog.props() ('dialogType')).toBe('add');
-// });
+    // wrapper.instance();
+    // console.log(wrapper.state());
+    // expect(wrapper.find(AddDialogContent)).toHaveLength(1);
+    // console.log(dialog.find('input').length); // -> inputów 0
+    // console.log(dialog.debug());
+    // console.log(dialog.html()); -> null
+    // expect(dialog.find(AddDialogContent)).toHaveLength(1);
+});

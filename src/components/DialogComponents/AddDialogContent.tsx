@@ -10,13 +10,14 @@ import { SaveDialogButton } from '../SaveDialogButton';
 import { PropTypes } from 'node_modules/@material-ui/core/index';
 
 
-interface IAddDialogContentState  { 
+interface IAddDialogContentProps  { 
     hideDialog: Function, 
     handleInputChange: React.ChangeEventHandler<HTMLInputElement>, 
     saveRecipe: Function 
 }
 
-export const AddDialogContent = ({ hideDialog, handleInputChange, saveRecipe }: IAddDialogContentState ) => {
+export const AddDialogContent = ({ hideDialog, handleInputChange, saveRecipe }: IAddDialogContentProps
+     ) => {
     const textFieldProp = {
         label: "Name",
         type: "text",

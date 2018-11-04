@@ -9,17 +9,23 @@ const styles = (theme: any) => ({
     },
 });
 
- const SaveDialogButtonUnstyled = (props: any) => {
-    const { saveRecipe, classes } = props;
-    return (
-        <Button
-            variant="contained"
-            type="button"
-            color="primary"
-            className={classes.button}
-            onClick={saveRecipe}
-        >Save</Button>
-    );
+class SaveDialogButtonUnstyled extends React.Component<any, any> {
+    constructor(props: any) {
+        super(props);
+    }
+
+    render() {
+        const { saveRecipe, classes } = this.props;
+        return (
+            <Button
+                variant="contained"
+                type="button"
+                color="primary"
+                className={classes.button}
+                onClick={saveRecipe}
+            >Save</Button>
+        );
+    }
 }
 
 export let SaveDialogButton = withStyles(styles)(SaveDialogButtonUnstyled);

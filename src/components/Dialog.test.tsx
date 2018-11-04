@@ -52,21 +52,6 @@ it('has AddDialogContent component', () => {
         oldRecipeDirections: '',
         hideDialog: () => { },
         updateRecipesList: () => { },
-        saveRecipe: function() {
-
-            // JSON.parse(JSON.stringify(x)) zwraca deep cloned object
-            let recipesList = JSON.parse(JSON.stringify(this.recipesList));
-            // const { changedIngredients, changedRecipeName, changedDirections } = this.state;
-            // const { oldRecipeName, oldRecipeIngredients, oldRecipeDirections, recipeKey } = this.props
-    
-            let newRecipe = { name: "", ingredients: "", directions: "" };
-    
-            recipesList[newRecipe.name] = newRecipe;
-    
-    
-            localStorage.setItem('recipesList', JSON.stringify(recipesList));
-    
-        },
         recipesList: {},
         recipeKey: '',
         isModalOpen: true,
@@ -86,57 +71,33 @@ it('has AddDialogContent component', () => {
 });
 
 it('saveRecipe in AddDialogComponent updates LocalStorage', () => {
-    let recipesList: {};
-    // function handleInputChange(event: any) {
-    //     const target = event.target;
-    //     const value = target.value;
-    //     const name = target.name;
-
-    //     this.setState({
-    //         [name]: value
-    //     });
-    // }
     const dialogProps = {
+        dialogType: 'add',
+        oldRecipeName: '',
+        oldRecipeIngredients: '',
+        oldRecipeDirections: '',
         hideDialog: () => { },
-        handleInputChange: () => { },
-
-        saveRecipe: function() {
-            // recipesList = JSON.parse(JSON.stringify(recipesList));
-            let newRecipe = { name: "", ingredients: "", directions: "" };    
-            recipesList[newRecipe.name] = newRecipe;
-            localStorage.setItem('recipesList', JSON.stringify(recipesList));
-        },
+        updateRecipesList: () => { },
+        recipesList: {},
+        recipeKey: '',
+        isModalOpen: true,
     }
     
-    const wrapper = mount((<AddDialogContent {...dialogProps} />));
+    const wrapper = mount((<Dialog {...dialogProps} />));
+    expect(wrapper.find(AddDialogContent)).toHaveLength(1);
+    expect(wrapper.find(SaveDialogButton)).toHaveLength(1);
     expect(wrapper.find(TextField)).toHaveLength(3);
     expect(wrapper.find('Input[id="name"]')).toHaveLength(1);
+    
+    /** 
+    * inputy są  niekontrolowane. Ale też nie można ręcznie podmienić wartości.
+    * Ponieważ metoda OnChange zmieniała stan komponentu rodzica, to po prostu ręcznie zmieniam ten stan
+    **/
+    // wrapper.find('input[id="name"]').simulate('input', {currentTarget: {value: 'new recipe name'}});
+    wrapper.setState({changedRecipeName: "new recipe name"});
+    
+    wrapper.find(SaveDialogButton).simulate('click');
 
-    // wrapper.find('input[id="name"]').simulate('change', {currentTarget: {value: 'new recipe name'}});
-    wrapper.find('input[id="name"]').getDOMNode().nodeValue =  'new recipe name';
-
-
-    console.log(wrapper.find('input[id="name"]').setProps({value : "new recipe name"}));
-    // let input = wrapper.find('input[id="name"]');
-    // console.log(input..value)
-
-    // console.log(wrapper.debug());
-    expect(wrapper.find(SaveDialogButton)).toHaveLength(1);
-    console.log(localStorage);
-    // wrapper.find(SaveDialogButton).simulate('click');
-
-    // tslint:disable-line
-    // expect(wrapper.find('input[id="name"]').props().value).toContain('new recipe name');
-    // expect(wrapper.find('input[id="name"]').value).toContain('new recipe name');
-
-    // wrapper.find('#name[name="changedRecipeName"]').le
-    // simulate('change', {target: {value: 'new recipe name'}});
-    // console.log(dialog.debug());
-    // wrapper.instance();
-    // console.log(wrapper.state());
-    // expect(wrapper.find(AddDialogContent)).toHaveLength(1);
-    // console.log(dialog.find('input').length); // -> inputów 0
-    // console.log(dialog.debug());
-    // console.log(dialog.html()); -> null
-    // expect(dialog.find(AddDialogContent)).toHaveLength(1);
+    expect(JSON.parse(localStorage.getItem("recipesList")!))
+        .toMatchObject({"new recipe name": {"name":"new recipe name","ingredients":"","directions":""}});
 });

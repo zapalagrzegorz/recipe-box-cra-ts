@@ -40,7 +40,7 @@ it('saveRecipe in AddDialogComponent updates LocalStorage', () => {
     // console.log(wrapper.debug());
     // expect(wrapper.find(SaveDialogButton)).toHaveLength(1);
     // console.log(localStorage);
-    // wrapper.find(SaveDialogButton).simulate('click');
+
 
     // tslint:disable-line
     // expect(wrapper.find('input[id="name"]').props().value).toContain('new recipe name');

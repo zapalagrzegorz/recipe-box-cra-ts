@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { DeleteDialogContent } from './DialogComponents/DeleteDialogContent';
 import { EditDialogContent } from './DialogComponents/EditDialogContent';
-import { AddDialogContent } from './DialogComponents/AddDialogContent';
+import { AddDialogContent, IDialogContentState } from './DialogComponents/AddDialogContent';
 // import { array } from 'prop-types';
 
 interface IDialogProps {
@@ -55,8 +55,9 @@ export class Dialog extends React.Component<IDialogProps, any> {
         });
     }
 
-    saveRecipe(args: Array<any>) {
-        function _parseRefInputs(arr : Array<any>) : object {
+    saveRecipe(args: IDialogContentState) {
+
+        /*         function _parseRefInputs(arr : Array<any>) : object {
             const returnObject = {};
             args.forEach(function (inputDOM) {
                 const input = inputDOM.current;
@@ -74,38 +75,36 @@ export class Dialog extends React.Component<IDialogProps, any> {
                 
             });
             return returnObject; 
-        }
+        } */
 
         // JSON.parse(JSON.stringify(x)) zwraca deep cloned object
         let recipesList = JSON.parse(JSON.stringify(this.props.recipesList));
 
-        const { changedIngredients, changedRecipeName, changedDirections } = this.state;
+        const { changedIngredients, changedRecipeName, changedDirections } = args;
 
         const { oldRecipeName, oldRecipeIngredients, oldRecipeDirections, recipeKey } = this.props
 
         let newRecipe = { name: "", ingredients: "", directions: "" };
 
-        if (Array.isArray(args)) {
-            newRecipe = {...newRecipe, ..._parseRefInputs(args)};
+
+        if (changedRecipeName) {
+            newRecipe.name = changedRecipeName;
         } else {
-            if (changedRecipeName) {
-                newRecipe.name = changedRecipeName;
-            } else {
-                newRecipe.name = oldRecipeName;
-            }
-    
-            if (changedIngredients) {
-                newRecipe.ingredients = changedIngredients;
-            } else {
-                newRecipe.ingredients = oldRecipeIngredients;
-            }
-    
-            if (changedDirections) {
-                newRecipe.directions = changedDirections;
-            } else {
-                newRecipe.directions = oldRecipeDirections;
-            }
+            newRecipe.name = oldRecipeName;
         }
+
+        if (changedIngredients) {
+            newRecipe.ingredients = changedIngredients;
+        } else {
+            newRecipe.ingredients = oldRecipeIngredients;
+        }
+
+        if (changedDirections) {
+            newRecipe.directions = changedDirections;
+        } else {
+            newRecipe.directions = oldRecipeDirections;
+        }
+
 
         /* nowy przepis ma pusty klucz (props.recipeName). Jeżeli to nie jest nowy wpis,
         to nie rozróżniać  każego przypadku tj. sprawdzania co sie zmieniło to ingredients czy directions czy name, 

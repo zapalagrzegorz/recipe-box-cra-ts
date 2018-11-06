@@ -11,58 +11,78 @@ import { PropTypes } from 'node_modules/@material-ui/core/index';
 import Button from '@material-ui/core/Button';
 
 
+
 interface IAddDialogContentProps {
     hideDialog: Function,
     handleInputChange: React.ChangeEventHandler<HTMLInputElement>,
     saveRecipe: Function
 }
 
-/* Intentionally test uncontrolled components with refs */
-export class AddDialogContent extends React.Component<IAddDialogContentProps, any>  {
-    inputNameRef: React.RefObject<{}>;
-    inputIngredientsRef: React.RefObject<{}>;
-    inputDirectionsRef: React.RefObject<{}>;
+
+export interface IDialogContentState {
+    changedRecipeName: string | undefined,
+    changedIngredients: string | undefined,
+    changedDirections: string | undefined
+}
+
+export class AddDialogContent extends React.Component<IAddDialogContentProps, IDialogContentState>  {
+
     constructor(props: IAddDialogContentProps) {
         super(props);
-        this.inputNameRef = React.createRef();
-        this.inputIngredientsRef = React.createRef();
-        this.inputDirectionsRef = React.createRef();
-    }
+        this.state = {
+            changedRecipeName: undefined,
+            changedIngredients: undefined,
+            changedDirections: undefined
+        }
 
+    }
+    handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+        const newState = {};
+        newState[name] = value
+        this.setState(newState)
+        // not possible at 3.1.3 TS:
+        // this.setState({
+        //     [name]: value
+        // });
+    }
     render() {
-        const {saveRecipe} = this.props;
-        
+        const { saveRecipe } = this.props;
+
         const textFieldProp = {
-            label: "Name",
+
             type: "text",
             fullWidth: true,
-            defaultValue: "",
-            onChange: this.props.handleInputChange,
+            onChange: this.handleInputChange,
             margin: 'normal' as PropTypes.Margin
         }
         return (
             <div>
                 <DialogContent>
                     <TextField
-                        inputRef={this.inputNameRef}
                         autoFocus
                         {...textFieldProp}
                         id="name"
+                        label="Name"
                         name="changedRecipeName"
+                        value={this.state.changedRecipeName}
                     />
                     <TextField
                         {...textFieldProp}
-                        inputRef={this.inputIngredientsRef}
                         label="Ingredients"
                         id="ingredients"
                         name="changedIngredients"
+                        value={this.state.changedIngredients}
                     />
                     <TextField
                         {...textFieldProp}
-                        inputRef={this.inputDirectionsRef}
                         label="Directions"
                         id="directions"
                         name="changedDirections"
+                        value={this.state.changedDirections}
                     />
                 </DialogContent>
                 <DialogActions>
@@ -71,7 +91,7 @@ export class AddDialogContent extends React.Component<IAddDialogContentProps, an
                         variant="contained"
                         type="button"
                         color="primary"
-                        onClick={() => saveRecipe([this.inputNameRef, this.inputIngredientsRef, this.inputDirectionsRef])}
+                        onClick={() => saveRecipe(this.state)}
                     >Save</Button>
 
                     <CancelDialogButton

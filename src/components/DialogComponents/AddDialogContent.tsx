@@ -14,15 +14,13 @@ import Button from '@material-ui/core/Button';
 
 interface IAddDialogContentProps {
     hideDialog: Function,
-    handleInputChange: React.ChangeEventHandler<HTMLInputElement>,
     saveRecipe: Function
 }
 
-
 export interface IDialogContentState {
-    changedRecipeName: string | undefined,
-    changedIngredients: string | undefined,
-    changedDirections: string | undefined
+    changedRecipeName: string,
+    changedIngredients: string,
+    changedDirections: string
 }
 
 export class AddDialogContent extends React.Component<IAddDialogContentProps, IDialogContentState>  {
@@ -30,12 +28,12 @@ export class AddDialogContent extends React.Component<IAddDialogContentProps, ID
     constructor(props: IAddDialogContentProps) {
         super(props);
         this.state = {
-            changedRecipeName: undefined,
-            changedIngredients: undefined,
-            changedDirections: undefined
+            changedRecipeName: "",
+            changedIngredients: "",
+            changedDirections: ""
         }
-
     }
+
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const target = event.target;
         const value = target.value;
@@ -53,7 +51,6 @@ export class AddDialogContent extends React.Component<IAddDialogContentProps, ID
         const { saveRecipe } = this.props;
 
         const textFieldProp = {
-
             type: "text",
             fullWidth: true,
             onChange: this.handleInputChange,
@@ -88,6 +85,7 @@ export class AddDialogContent extends React.Component<IAddDialogContentProps, ID
                 <DialogActions>
                     <Button
                         id="addDialogContentSave"
+                        className="buttonAddDialogContentSave"
                         variant="contained"
                         type="button"
                         color="primary"

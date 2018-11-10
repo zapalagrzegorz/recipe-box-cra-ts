@@ -1,28 +1,22 @@
 import * as React from 'react';
 // import { Button } from '@material-ui/core';
-import { mount, 
+import {
+    mount,
     // render 
 } from 'enzyme';
 import { Dialog } from './Dialog';
 import { AddDialogContent } from './DialogComponents/AddDialogContent';
+import { EditDialogContent } from './DialogComponents/EditDialogContent';
 // import DialogActions from '@material-ui/core/DialogActions';
 // import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 // import { CancelDialogButton } from './DialogComponents/CancelDialogButton';
-import { SaveDialogButton } from './SaveDialogButton';
+// import { SaveDialogButton } from './SaveDialogButton';
 /* import { createShallow, 
     // createMount 
 } from '@material-ui/core/test-utils';
  */
-// dialogType: string,
-//     oldRecipeName: string,
-//     oldRecipeIngredients: string,
-//     oldRecipeDirections: string,
-//     hideDialog() : void,
-//     updateRecipesList() : void,
-//     recipesList: object,
-//     recipeKey : string,
-//     isModalOpen: boolean,
+
 
 
 
@@ -56,21 +50,15 @@ it('has AddDialogContent component', () => {
         recipeKey: '',
         isModalOpen: true,
     }
-    // let mount = createMount();
-    
+
     const wrapper = mount((<Dialog {...dialogProps} />));
-    // console.log(dialog.debug());
-    // wrapper.instance();
-    // console.log(wrapper.state());
+    expect(wrapper.find(Dialog)).toHaveLength(1);
     expect(wrapper.find(AddDialogContent)).toHaveLength(1);
-    expect(wrapper.find(SaveDialogButton)).toHaveLength(1);
-    // console.log(dialog.find('input').length); // -> inputów 0
-    // console.log(dialog.debug());
-    // console.log(dialog.html()); -> null
-    // expect(dialog.find(AddDialogContent)).toHaveLength(1);
+    expect(wrapper.find('Button#addDialogContentSave')).toHaveLength(1);
+    wrapper.unmount();
 });
 
-it('saveRecipe in AddDialogComponent updates LocalStorage', () => {
+it('saves recipe via add modal window in Local Storage ', () => {
     const dialogProps = {
         dialogType: 'add',
         oldRecipeName: '',
@@ -82,22 +70,80 @@ it('saveRecipe in AddDialogComponent updates LocalStorage', () => {
         recipeKey: '',
         isModalOpen: true,
     }
-    
+
     const wrapper = mount((<Dialog {...dialogProps} />));
     expect(wrapper.find(AddDialogContent)).toHaveLength(1);
-    expect(wrapper.find(SaveDialogButton)).toHaveLength(1);
+    expect(wrapper.find('Button#addDialogContentSave')).toHaveLength(1);
     expect(wrapper.find(TextField)).toHaveLength(3);
-    expect(wrapper.find('Input[id="name"]')).toHaveLength(1);
-    
+    expect(wrapper.find('input[name="changedRecipeName"]')).toHaveLength(1);
+
     /** 
-    * inputy są  niekontrolowane. Ale też nie można ręcznie podmienić wartości.
-    * Ponieważ metoda OnChange zmieniała stan komponentu rodzica, to po prostu ręcznie zmieniam ten stan
+    * obsługa change/input przysparza wielu problemów
     **/
-    // wrapper.find('input[id="name"]').simulate('input', {currentTarget: {value: 'new recipe name'}});
-    wrapper.setState({changedRecipeName: "new recipe name"});
-    
-    wrapper.find(SaveDialogButton).simulate('click');
+    wrapper.find('input[name="changedRecipeName"]').simulate('change',
+        {
+            target:
+            {
+                value: 'new recipe name',
+                name: 'changedRecipeName'
+            }
+        }
+    );
+    // const addDialogContent = wrapper.find(AddDialogContent);
+    // console.log(addDialogContent.state());
+
+    wrapper.find('Button#addDialogContentSave').simulate('click');
 
     expect(JSON.parse(localStorage.getItem("recipesList")!))
-        .toMatchObject({"new recipe name": {"name":"new recipe name","ingredients":"","directions":""}});
+        .toMatchObject({ "new recipe name": { "name": "new recipe name", "ingredients": "", "directions": "" } });
+    wrapper.unmount();
+});
+
+it('updates recipe via edit modal window in Local Storage', () => {
+    const dialogProps = {
+        dialogType: 'edit',
+        oldRecipeName: 'testowy',
+        oldRecipeIngredients: 'składniki testowe',
+        oldRecipeDirections: 'polecenia testowe',
+        hideDialog: () => { },
+        updateRecipesList: () => { },
+        recipesList: {},
+        recipeKey: '',
+        isModalOpen: true,
+    }
+
+    const wrapper = mount((<Dialog {...dialogProps} />));
+    expect(wrapper.find(EditDialogContent)).toHaveLength(1);
+    expect(wrapper.find('Button#editDialogContentSave')).toHaveLength(1);
+    expect(wrapper.find(TextField)).toHaveLength(3);
+    expect(wrapper.find('input[name="changedRecipeName"]')).toHaveLength(1);
+
+    /** 
+    * obsługa change/input przysparza wielu problemów
+    **/
+    wrapper.find('input[name="changedRecipeName"]').simulate('change',
+        {
+            target:
+            {
+                value: 'new recipe name',
+                name: 'changedRecipeName'
+            }
+        }
+    );
+    const editDialogContent = wrapper.find(EditDialogContent);
+    console.log(editDialogContent.state());
+
+    wrapper.find('Button#editDialogContentSave').simulate('click');
+
+    expect(JSON.parse(localStorage.getItem("recipesList")!))
+        .toMatchObject({
+            "new recipe name":
+            {
+                "name": "new recipe name",
+                "ingredients": "składniki testowe",
+                "directions": "polecenia testowe"
+            }
+        });
+
+    wrapper.unmount();
 });

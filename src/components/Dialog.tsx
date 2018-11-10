@@ -30,7 +30,7 @@ export class Dialog extends React.Component<IDialogProps, any> {
             changedDirections: '',
         };
 
-        this.handleInputChange = this.handleInputChange.bind(this);
+        // this.handleInputChange = this.handleInputChange.bind(this);
         this.saveRecipe = this.saveRecipe.bind(this);
         this.deleteRecipe = this.deleteRecipe.bind(this);
         this.openModal = this.openModal.bind(this);
@@ -45,38 +45,19 @@ export class Dialog extends React.Component<IDialogProps, any> {
         this.setState({ modalIsOpen: false });
     }
 
-    handleInputChange(event: any) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
+    // handleInputChange(event: any) {
+    //     const target = event.target;
+    //     const value = target.value;
+    //     const name = target.name;
 
-        this.setState({
-            [name]: value
-        });
-    }
+    //     this.setState({
+    //         [name]: value
+    //     });
+    // }
 
     saveRecipe(args: IDialogContentState) {
 
-        /*         function _parseRefInputs(arr : Array<any>) : object {
-            const returnObject = {};
-            args.forEach(function (inputDOM) {
-                const input = inputDOM.current;
-                switch (input.id) {
-                    case ('name'):
-                        returnObject['name'] = input.value;
-                        break;
-                    case ('ingredients'):
-                        returnObject['ingredients'] = input.value;    
-                        break
-                    case ('directions'):
-                        returnObject['ingredients'] = input.value;
-                        break;
-                }
-                
-            });
-            return returnObject; 
-        } */
-
+        // nie klonuj tylko filtruj do nowego obiektu TODO
         // JSON.parse(JSON.stringify(x)) zwraca deep cloned object
         let recipesList = JSON.parse(JSON.stringify(this.props.recipesList));
 
@@ -84,39 +65,43 @@ export class Dialog extends React.Component<IDialogProps, any> {
 
         const { oldRecipeName, oldRecipeIngredients, oldRecipeDirections, recipeKey } = this.props
 
-        let newRecipe = { name: "", ingredients: "", directions: "" };
-
+        let updatedRecipe = { name: "", ingredients: "", directions: "" };
 
         if (changedRecipeName) {
-            newRecipe.name = changedRecipeName;
+            updatedRecipe.name = changedRecipeName;
         } else {
-            newRecipe.name = oldRecipeName;
+            updatedRecipe.name = oldRecipeName;
         }
 
         if (changedIngredients) {
-            newRecipe.ingredients = changedIngredients;
+            updatedRecipe.ingredients = changedIngredients;
         } else {
-            newRecipe.ingredients = oldRecipeIngredients;
+            updatedRecipe.ingredients = oldRecipeIngredients;
         }
 
         if (changedDirections) {
-            newRecipe.directions = changedDirections;
+            updatedRecipe.directions = changedDirections;
         } else {
-            newRecipe.directions = oldRecipeDirections;
+            updatedRecipe.directions = oldRecipeDirections;
         }
 
 
-        /* nowy przepis ma pusty klucz (props.recipeName). Jeżeli to nie jest nowy wpis,
-        to nie rozróżniać  każego przypadku tj. sprawdzania co sie zmieniło to ingredients czy directions czy name, 
+        /* 
+        1. nowy przepis ma pusty klucz (props.recipeName). 
+        2. Jeżeli nie jest to nowy wpis, to nie rozróżniać każego przypadku tj. sprawdzania co się zmieniło to ingredients czy directions czy name, 
         to skasować stary wpis i podać nowy, zamiast podmian właściwości, a potem zawsze tworzymy nowy */
-        if (oldRecipeName) {
-            // TODO powinien być jakiś .filter
-            delete recipesList[recipeKey];
-        }
+        const updatedRecipeList = ( (oldRecipeName) => {
+            if (oldRecipeName) {
+                const { [recipeKey]: _, ...updatedRecipesList } = recipesList;
+                return updatedRecipesList;
+            } else {
+                return recipesList;
+            }
+        })(oldRecipeName);
 
-        recipesList[newRecipe.name] = newRecipe;
+        updatedRecipeList[updatedRecipe.name] = updatedRecipe;
 
-        localStorage.setItem('recipesList', JSON.stringify(recipesList));
+        localStorage.setItem('recipesList', JSON.stringify(updatedRecipeList));
 
         this.props.updateRecipesList();
         this.props.hideDialog();
@@ -151,7 +136,6 @@ export class Dialog extends React.Component<IDialogProps, any> {
                 </DialogTitle>
                 {this.props.dialogType === 'add' && <AddDialogContent
                     hideDialog={this.props.hideDialog}
-                    handleInputChange={this.handleInputChange}
                     saveRecipe={this.saveRecipe} />}
 
                 {this.props.dialogType === 'delete' && <DeleteDialogContent
@@ -166,7 +150,6 @@ export class Dialog extends React.Component<IDialogProps, any> {
                     dialogIngredients={this.props.oldRecipeIngredients}
                     directions={this.props.oldRecipeDirections}
                     hideDialog={this.props.hideDialog}
-                    handleInputChange={this.handleInputChange}
                     saveRecipe={this.saveRecipe} />}
             </DialogMaterial>
         );

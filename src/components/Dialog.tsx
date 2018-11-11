@@ -1,5 +1,3 @@
-/// <reference path="./interfaces.d.ts" />
-
 import * as React from 'react';
 
 import DialogMaterial from '@material-ui/core/Dialog';
@@ -107,8 +105,9 @@ export class Dialog extends React.Component<IDialogProps, any> {
         this.props.hideDialog();
     }
 
-    deleteRecipe() {
-
+    deleteRecipe(event: React.MouseEvent<HTMLElement>): void {
+        // function(event: React.MouseEvent<HTMLElement>) => void,
+        // no mutations
         let recipesList = JSON.parse(JSON.stringify(this.props.recipesList));
 
         delete recipesList[this.props.recipeKey];

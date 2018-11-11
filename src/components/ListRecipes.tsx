@@ -1,5 +1,3 @@
-/// <reference path="./interfaces.d.ts" />
-
 import * as React from 'react';
 
 import Recipe from './Recipe';
@@ -21,6 +19,12 @@ interface IListRecipesState {
     recipesList : object,
     recipeKey : string,
     isModalOpen : boolean
+}
+
+interface IRecipeObj {
+    name: string,
+    ingredients: string,
+    directions: string
 }
 
 export default class ListRecipes extends React.PureComponent<any, IListRecipesState> {

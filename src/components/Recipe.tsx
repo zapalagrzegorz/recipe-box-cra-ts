@@ -12,12 +12,12 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditIcon from '@material-ui/icons/Edit';
 
 interface IRecipeProps {
-    title: string,
-    ingredients: string,
-    directions: string,
+    readonly title: string,
+    readonly ingredients: string,
+    readonly directions: string,
+    readonly classes? : any
     onButtonEditClick(event: any) : void
     onButtonDeleteClick(event: any) : void,
-    classes? : any
 }
 
 const styles = (theme: any) => ({

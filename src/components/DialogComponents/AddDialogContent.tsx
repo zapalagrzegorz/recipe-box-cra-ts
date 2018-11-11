@@ -1,4 +1,3 @@
-// / <reference path="../../../node_modules/@material-ui/core/index.d.ts" />
 
 import * as React from 'react';
 
@@ -6,15 +5,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import { CancelDialogButton } from './CancelDialogButton';
-// import { SaveDialogButton } from '../SaveDialogButton';
 import { PropTypes } from 'node_modules/@material-ui/core/index';
 import Button from '@material-ui/core/Button';
 
-
-
 interface IAddDialogContentProps {
-    hideDialog: Function,
-    saveRecipe: Function
+    hideDialog(): void,
+    saveRecipe(state:IDialogContentState):void
 }
 
 export interface IDialogContentState {
@@ -25,13 +21,10 @@ export interface IDialogContentState {
 
 export class AddDialogContent extends React.Component<IAddDialogContentProps, IDialogContentState>  {
 
-    constructor(props: IAddDialogContentProps) {
-        super(props);
-        this.state = {
-            changedRecipeName: "",
-            changedIngredients: "",
-            changedDirections: ""
-        }
+    state: IDialogContentState = {
+        changedRecipeName: "",
+        changedIngredients: "",
+        changedDirections: ""
     }
 
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +41,7 @@ export class AddDialogContent extends React.Component<IAddDialogContentProps, ID
         // });
     }
     render() {
-        const { saveRecipe } = this.props;
+        const { saveRecipe, hideDialog } = this.props;
 
         const textFieldProp = {
             type: "text",
@@ -93,7 +86,7 @@ export class AddDialogContent extends React.Component<IAddDialogContentProps, ID
                     >Save</Button>
 
                     <CancelDialogButton
-                        hideDialog={this.props.hideDialog} />
+                        hideDialog={hideDialog} />
                 </DialogActions>
             </div>
         );

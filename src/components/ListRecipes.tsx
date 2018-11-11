@@ -10,40 +10,40 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 
+export interface IRecipeList {
+    readonly [key: string]: {
+        name: string,
+        directions: string,
+        ingredients: string
+    }
+}
 interface IListRecipesState {
-    dialogType: string,
-    recipeName: string,
-    recipeIngredients: string,
-    recipeDirections: string,
-    recipesListElements: JSX.Element[],
-    recipesList : object,
-    recipeKey : string,
-    isModalOpen : boolean
+    readonly dialogType: string,
+    readonly recipeName: string,
+    readonly recipeIngredients: string,
+    readonly recipeDirections: string,
+    readonly recipesListElements: JSX.Element[],
+    readonly recipesList: IRecipeList,
+    readonly recipeKey: string,
+    readonly isModalOpen: boolean
 }
 
 interface IRecipeObj {
-    name: string,
-    ingredients: string,
-    directions: string
+    readonly name: string,
+    readonly ingredients: string,
+    readonly directions: string
 }
 
-export default class ListRecipes extends React.PureComponent<any, IListRecipesState> {
-    constructor(props : any) {
-        super(props);
-        this.state = {
-            dialogType: '',
-            recipeName: '',
-            recipeIngredients: '',
-            recipeDirections: '',
-            recipesListElements: [],
-            recipesList: {},
-            recipeKey: '',
-            isModalOpen: false,
-        },
-
-        this.handleDialog = this.handleDialog.bind(this);
-        this.handleHideDialog = this.handleHideDialog.bind(this);
-        this.updateRecipesList = this.updateRecipesList.bind(this);
+export default class ListRecipes extends React.Component<{}, IListRecipesState> {
+    readonly state: IListRecipesState = {
+        dialogType: '',
+        recipeName: '',
+        recipeIngredients: '',
+        recipeDirections: '',
+        recipesListElements: [],
+        recipesList: {},
+        recipeKey: '',
+        isModalOpen: false,
     }
 
     componentDidMount() {
@@ -53,30 +53,25 @@ export default class ListRecipes extends React.PureComponent<any, IListRecipesSt
         this.updateRecipesList();
     }
 
-    /* Aktualizacja listy przepisów */
-    updateRecipesList() {
-        let recipesListElementsJSX: JSX.Element[] = [];
+    updateRecipesList = () => {
+        let recipesListElements: JSX.Element[] = [];
 
-        const recipesList: object = JSON.parse(localStorage.getItem('recipesList') as string);
+        const recipesList: IRecipeList = JSON.parse(localStorage.getItem('recipesList')!);
 
-        for (let key in recipesList) {
-            const recipe = recipesList[key];
-            const recipeKey = key;
+        for (const recipeKey in recipesList) {
+            const recipe = recipesList[recipeKey];
 
-            recipesListElementsJSX.push(<Recipe
+            recipesListElements.push(<Recipe
                 key={recipe.name}
                 title={recipe.name}
                 ingredients={recipe.ingredients}
                 directions={recipe.directions}
-                onButtonEditClick={(e: any) => this.handleDialog('edit', recipe, recipeKey, e)}
-                onButtonDeleteClick={(e: any) => this.handleDialog('delete', recipe, recipeKey, e)}
+                onButtonEditClick={() => this.handleDialog('edit', recipe, recipeKey)}
+                onButtonDeleteClick={() => this.handleDialog('delete', recipe, recipeKey)}
             />);
         }
 
-        this.setState({
-            recipesListElements: recipesListElementsJSX,
-            recipesList: recipesList
-        });
+        this.setState({recipesListElements, recipesList});
     }
 
     /**
@@ -111,12 +106,11 @@ export default class ListRecipes extends React.PureComponent<any, IListRecipesSt
      * Uwaga - wszystkie argumenty event handler'a trzeba przekazać już teraz
      */
 
-    handleDialog(
+    handleDialog = (
         dialogType: string,
         dialogRecipeData: IRecipeObj,
-        recipeKey: string,
-        e: React.MouseEvent<HTMLElement>
-    ): void {
+        recipeKey: string
+    ): void => {
         this.setState({
             isModalOpen: true,
             dialogType,
@@ -127,7 +121,7 @@ export default class ListRecipes extends React.PureComponent<any, IListRecipesSt
         });
     }
 
-    handleHideDialog() {
+    handleHideDialog = (): void => {
         this.setState({ isModalOpen: false });
     }
 
@@ -144,7 +138,7 @@ export default class ListRecipes extends React.PureComponent<any, IListRecipesSt
         return (
             <div style={wrapStyle} className="grid-container">
                 <CssBaseline />
-                
+
                 <div className="grid-x">
                     <div className="cell small-12">
                         <Card>
@@ -167,7 +161,7 @@ export default class ListRecipes extends React.PureComponent<any, IListRecipesSt
                                     color="primary"
                                     className="button"
                                     type="button"
-                                    onClick={(e) => this.handleDialog('add', emptyRecipe, '', e)}
+                                    onClick={() => this.handleDialog('add', emptyRecipe, '')}
                                 >
                                     Add recipe
                                 </Button>

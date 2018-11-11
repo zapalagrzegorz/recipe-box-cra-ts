@@ -2,11 +2,9 @@ import * as React from 'react';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
-// import { DeleteDialogButton } from './DeleteDialogButton';
 import { CancelDialogButton } from './CancelDialogButton';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-
 
 const typographyProps = {
     variant: "subheading" as "subheading",
@@ -15,11 +13,11 @@ const typographyProps = {
 }
 
 interface IDeleteDialogContentProps {
-    recipeName: any,
-    dialogIngredients: any,
-    directions: any,
+    recipeName: string,
+    dialogIngredients: string,
+    directions: string,
     deleteRecipe(event: React.MouseEvent<HTMLElement>) : void,
-    hideDialog: any
+    hideDialog(event: React.MouseEvent<HTMLElement>) : void,
 }
 
 export const DeleteDialogContent = (
@@ -61,9 +59,7 @@ export const DeleteDialogContent = (
 
 interface IDeleteDialogButtonProps {
     deleteRecipe(event: React.MouseEvent<HTMLElement>): void,
-    classes: any
 }
-
 
 /* nadpisywanie styli dla MUI */
 const styles = (theme: any) => ({
@@ -74,12 +70,11 @@ const styles = (theme: any) => ({
 });
 
 const DeleteDialogButtonUnstyled = (props : IDeleteDialogButtonProps) => {
-    const { classes, deleteRecipe } = props;
+    const { deleteRecipe } = props;
     return (
         <Button
             variant="contained"
             color="secondary"
-            className={classes.button}
             type="button"
             onClick={deleteRecipe}
         >I DO WANT TO IRREVERSIBLE DELETE RECIPE</Button>

@@ -2,58 +2,36 @@ import * as React from 'react';
 
 import DialogMaterial from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import { IRecipeList } from "./ListRecipes";
 import { DeleteDialogContent } from './DialogComponents/DeleteDialogContent';
 import { EditDialogContent } from './DialogComponents/EditDialogContent';
 import { AddDialogContent, IDialogContentState } from './DialogComponents/AddDialogContent';
-// import { array } from 'prop-types';
 
 interface IDialogProps {
-    dialogType: string,
-    oldRecipeName: string,
-    oldRecipeIngredients: string,
-    oldRecipeDirections: string,
+    readonly dialogType: string,
+    readonly oldRecipeName: string,
+    readonly oldRecipeIngredients: string,
+    readonly oldRecipeDirections: string,
+    readonly recipesList: IRecipeList,
+    readonly recipeKey: string,
+    readonly isModalOpen: boolean,
     hideDialog(): void,
-    updateRecipesList(): void,
-    recipesList: object,
-    recipeKey: string,
-    isModalOpen: boolean,
+    updateRecipesList(): void
 }
-export class Dialog extends React.Component<IDialogProps, any> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            changedRecipeName: '',
-            changedIngredients: '',
-            changedDirections: '',
-        };
 
-        // this.handleInputChange = this.handleInputChange.bind(this);
-        this.saveRecipe = this.saveRecipe.bind(this);
-        this.deleteRecipe = this.deleteRecipe.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-    }
 
-    openModal() {
-        this.setState({ modalIsOpen: true });
-    }
+export class Dialog extends React.Component<IDialogProps, {}> {
 
-    closeModal() {
-        this.setState({ modalIsOpen: false });
-    }
+    filterObjectByKey = (list: any, deleteFlag: boolean, key: string): object => {
+        if (deleteFlag) {
+            const { [key]: _, ...updatedList } = list;
+            return updatedList;
+        } else {
+            return list;
+        }
+    };
 
-    // handleInputChange(event: any) {
-    //     const target = event.target;
-    //     const value = target.value;
-    //     const name = target.name;
-
-    //     this.setState({
-    //         [name]: value
-    //     });
-    // }
-
-    saveRecipe(args: IDialogContentState) {
+    saveRecipe = (args: IDialogContentState): void => {
 
         // nie klonuj tylko filtruj do nowego obiektu TODO
         // JSON.parse(JSON.stringify(x)) zwraca deep cloned object
@@ -88,7 +66,8 @@ export class Dialog extends React.Component<IDialogProps, any> {
         1. nowy przepis ma pusty klucz (props.recipeName). 
         2. Jeżeli nie jest to nowy wpis, to nie rozróżniać każego przypadku tj. sprawdzania co się zmieniło to ingredients czy directions czy name, 
         to skasować stary wpis i podać nowy, zamiast podmian właściwości, a potem zawsze tworzymy nowy */
-        const updatedRecipeList = ( (oldRecipeName) => {
+        // https://stackoverflow.com/questions/38750705/filter-object-properties-by-key-in-es6
+        const updatedRecipeList = ((oldRecipeName) => {
             if (oldRecipeName) {
                 const { [recipeKey]: _, ...updatedRecipesList } = recipesList;
                 return updatedRecipesList;
@@ -96,6 +75,8 @@ export class Dialog extends React.Component<IDialogProps, any> {
                 return recipesList;
             }
         })(oldRecipeName);
+
+        this.filterObjectByKey(recipesList, !!oldRecipeName, recipeKey)
 
         updatedRecipeList[updatedRecipe.name] = updatedRecipe;
 
@@ -105,14 +86,10 @@ export class Dialog extends React.Component<IDialogProps, any> {
         this.props.hideDialog();
     }
 
-    deleteRecipe(event: React.MouseEvent<HTMLElement>): void {
-        // function(event: React.MouseEvent<HTMLElement>) => void,
-        // no mutations
-        let recipesList = JSON.parse(JSON.stringify(this.props.recipesList));
+    deleteRecipe = (event: React.MouseEvent<HTMLElement>): void => {
+        const updatedRecipeList = this.filterObjectByKey(this.props.recipesList, true, this.props.recipeKey);
 
-        delete recipesList[this.props.recipeKey];
-
-        localStorage.setItem('recipesList', JSON.stringify(recipesList));
+        localStorage.setItem('recipesList', JSON.stringify(updatedRecipeList));
 
         this.props.updateRecipesList();
 

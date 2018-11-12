@@ -3,27 +3,22 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import { CancelDialogButton } from './CancelDialogButton';
-import { IDialogContentState } from './AddDialogContent';
+import { IDialogContentState } from '../Dialog';
 import { PropTypes, Button } from '@material-ui/core/index';
+import { IRecipeObj } from "../ListRecipes";
 
-interface IEditDialogProps {
-    recipeName: string,
-    dialogIngredients: string,
-    directions: string,
-    hideDialog: any,
-    saveRecipe: Function
+interface IEditDialogProps extends IRecipeObj {
+    hideDialog(): void,
+    saveRecipe(state: IDialogContentState): void
 }
 
 export class EditDialogContent extends React.Component<IEditDialogProps, IDialogContentState> {
-    constructor(props: IEditDialogProps) {
-        super(props);
-        this.state = {
-            changedRecipeName: this.props.recipeName,
-            changedIngredients: this.props.dialogIngredients,
-            changedDirections: this.props.directions
-        }
+    state: IDialogContentState = {
+        changedName: this.props.name,
+        changedIngredients: this.props.ingredients,
+        changedDirections: this.props.directions
     }
-    // todo set it outside
+
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const target = event.target;
         const value = target.value;
@@ -39,7 +34,7 @@ export class EditDialogContent extends React.Component<IEditDialogProps, IDialog
     }
     render() {
         const { saveRecipe, hideDialog } = this.props;
-
+        const { changedName, changedIngredients, changedDirections } = this.state;
         const textFieldProp = {
             type: "text",
             fullWidth: true,
@@ -55,22 +50,21 @@ export class EditDialogContent extends React.Component<IEditDialogProps, IDialog
                         label="Name"
                         id="name"
                         name="changedRecipeName"
-                        value={this.state.changedRecipeName}
-
+                        value={changedName}
                     />
                     <TextField
                         {...textFieldProp}
                         label="Ingredients"
                         id="ingredients"
                         name="changedIngredients"
-                        value={this.state.changedIngredients}
+                        value={changedIngredients}
                     />
                     <TextField
                         {...textFieldProp}
                         label="Directions"
                         id="directions"
                         name="changedDirections"
-                        value={this.state.changedDirections}
+                        value={changedDirections}
                         multiline={true}
                     />
                 </DialogContent>

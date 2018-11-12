@@ -5,13 +5,18 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { IRecipeList } from "./ListRecipes";
 import { DeleteDialogContent } from './DialogComponents/DeleteDialogContent';
 import { EditDialogContent } from './DialogComponents/EditDialogContent';
-import { AddDialogContent, IDialogContentState } from './DialogComponents/AddDialogContent';
+import { AddDialogContent } from './DialogComponents/AddDialogContent';
 
-interface IDialogProps {
+export interface IDialogContentState {
+    readonly changedName: string,
+    readonly changedIngredients: string,
+    readonly changedDirections: string
+}
+export interface IDialogProps {
     readonly dialogType: string,
-    readonly oldRecipeName: string,
-    readonly oldRecipeIngredients: string,
-    readonly oldRecipeDirections: string,
+    readonly currentName: string,
+    readonly currentIngredients: string,
+    readonly currentDirections: string,
     readonly recipesList: IRecipeList,
     readonly recipeKey: string,
     readonly isModalOpen: boolean,
@@ -19,114 +24,90 @@ interface IDialogProps {
     updateRecipesList(): void
 }
 
-
 export class Dialog extends React.Component<IDialogProps, {}> {
 
-    filterObjectByKey = (list: any, deleteFlag: boolean, key: string): object => {
-        if (deleteFlag) {
-            const { [key]: _, ...updatedList } = list;
-            return updatedList;
-        } else {
-            return list;
-        }
+    // https://stackoverflow.com/questions/38750705/filter-object-properties-by-key-in-es6
+    filterObjectByKey = (list: any, key: string): IRecipeList => {
+        const { [key]: _, ...updatedList } = list;
+        return updatedList;
     };
 
     saveRecipe = (args: IDialogContentState): void => {
 
-        // nie klonuj tylko filtruj do nowego obiektu TODO
-        // JSON.parse(JSON.stringify(x)) zwraca deep cloned object
-        let recipesList = JSON.parse(JSON.stringify(this.props.recipesList));
-
-        const { changedIngredients, changedRecipeName, changedDirections } = args;
-
-        const { oldRecipeName, oldRecipeIngredients, oldRecipeDirections, recipeKey } = this.props
-
-        let updatedRecipe = { name: "", ingredients: "", directions: "" };
-
-        if (changedRecipeName) {
-            updatedRecipe.name = changedRecipeName;
-        } else {
-            updatedRecipe.name = oldRecipeName;
-        }
-
-        if (changedIngredients) {
-            updatedRecipe.ingredients = changedIngredients;
-        } else {
-            updatedRecipe.ingredients = oldRecipeIngredients;
-        }
-
-        if (changedDirections) {
-            updatedRecipe.directions = changedDirections;
-        } else {
-            updatedRecipe.directions = oldRecipeDirections;
-        }
-
-
-        /* 
-        1. nowy przepis ma pusty klucz (props.recipeName). 
-        2. Jeżeli nie jest to nowy wpis, to nie rozróżniać każego przypadku tj. sprawdzania co się zmieniło to ingredients czy directions czy name, 
-        to skasować stary wpis i podać nowy, zamiast podmian właściwości, a potem zawsze tworzymy nowy */
-        // https://stackoverflow.com/questions/38750705/filter-object-properties-by-key-in-es6
-        const updatedRecipeList = ((oldRecipeName) => {
-            if (oldRecipeName) {
-                const { [recipeKey]: _, ...updatedRecipesList } = recipesList;
-                return updatedRecipesList;
-            } else {
-                return recipesList;
+        const { currentName, currentIngredients, currentDirections, updateRecipesList,
+            hideDialog, recipesList } = this.props
+        const { changedName, changedIngredients, changedDirections } = args;
+        let updatedRecipe = {
+            [changedName]: {
+                'name': currentName,
+                'ingredients': currentIngredients,
+                'directions': currentDirections
             }
-        })(oldRecipeName);
+        };
 
-        this.filterObjectByKey(recipesList, !!oldRecipeName, recipeKey)
+        if (changedName) {
+            updatedRecipe[changedName]['name'] = changedName;
+        }
+        if (changedIngredients) {
+            updatedRecipe[changedName]['ingredients'] = changedIngredients;
+        }
+        if (changedDirections) {
+            updatedRecipe[changedName]['directions'] = changedDirections;
+        }
 
-        updatedRecipeList[updatedRecipe.name] = updatedRecipe;
+        const updatedRecipesList = { ...recipesList, ...updatedRecipe };
 
-        localStorage.setItem('recipesList', JSON.stringify(updatedRecipeList));
+        localStorage.setItem('recipesList', JSON.stringify(updatedRecipesList));
 
-        this.props.updateRecipesList();
-        this.props.hideDialog();
+        updateRecipesList();
+        hideDialog();
     }
 
-    deleteRecipe = (event: React.MouseEvent<HTMLElement>): void => {
-        const updatedRecipeList = this.filterObjectByKey(this.props.recipesList, true, this.props.recipeKey);
+    deleteRecipe = (): void => {
+        const { recipesList, recipeKey, updateRecipesList, hideDialog } = this.props;
+
+        const updatedRecipeList = this.filterObjectByKey(recipesList, recipeKey);
 
         localStorage.setItem('recipesList', JSON.stringify(updatedRecipeList));
-
-        this.props.updateRecipesList();
-
-        this.props.hideDialog();
+        updateRecipesList();
+        hideDialog();
     }
 
     render() {
-
+        const { hideDialog, isModalOpen, dialogType, currentName, currentIngredients, currentDirections } = this.props;
+        const recipeProps = {
+            name: currentName,
+            ingredients: currentIngredients,
+            directions: currentDirections
+        }
+        const hideAndSaveProps = {
+            hideDialog,
+            saveRecipe: this.saveRecipe
+        }
         return (
             <DialogMaterial
-                open={this.props.isModalOpen}
-                onClose={this.props.hideDialog}
+                open={isModalOpen}
+                onClose={hideDialog}
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle
                     id="form-dialog-title"
                     style={{ textTransform: 'uppercase', textAlign: 'center' }}
                 >
-                    {this.props.dialogType}
+                    {dialogType}
                 </DialogTitle>
-                {this.props.dialogType === 'add' && <AddDialogContent
-                    hideDialog={this.props.hideDialog}
-                    saveRecipe={this.saveRecipe} />}
+                {dialogType === 'add' && <AddDialogContent
+                    {...hideAndSaveProps} />}
 
-                {this.props.dialogType === 'delete' && <DeleteDialogContent
-                    recipeName={this.props.oldRecipeName}
-                    dialogIngredients={this.props.oldRecipeIngredients}
-                    directions={this.props.oldRecipeDirections}
+                {dialogType === 'edit' && <EditDialogContent
+                    {...recipeProps}
+                    {...hideAndSaveProps} />}
+
+                {dialogType === 'delete' && <DeleteDialogContent
+                    {...recipeProps}
+                    hideDialog={hideDialog}
                     deleteRecipe={this.deleteRecipe}
-                    hideDialog={this.props.hideDialog} />}
-
-                {this.props.dialogType === 'edit' && <EditDialogContent
-                    recipeName={this.props.oldRecipeName}
-                    dialogIngredients={this.props.oldRecipeIngredients}
-                    directions={this.props.oldRecipeDirections}
-                    hideDialog={this.props.hideDialog}
-                    saveRecipe={this.saveRecipe} />}
+                />}
             </DialogMaterial>
         );
     }

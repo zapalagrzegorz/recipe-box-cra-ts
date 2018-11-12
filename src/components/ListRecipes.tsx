@@ -10,36 +10,30 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 
-export interface IRecipeList {
-    readonly [key: string]: {
-        name: string,
-        directions: string,
-        ingredients: string
-    }
+export interface IRecipeObj {
+    readonly name: string,
+    readonly ingredients: string,
+    readonly directions: string
 }
-interface IListRecipesState {
+
+export interface IRecipeList {
+    readonly [key: string]: IRecipeObj
+}
+
+interface IListRecipesState extends IRecipeObj {
     readonly dialogType: string,
-    readonly recipeName: string,
-    readonly recipeIngredients: string,
-    readonly recipeDirections: string,
     readonly recipesListElements: JSX.Element[],
     readonly recipesList: IRecipeList,
     readonly recipeKey: string,
     readonly isModalOpen: boolean
 }
 
-interface IRecipeObj {
-    readonly name: string,
-    readonly ingredients: string,
-    readonly directions: string
-}
-
 export default class ListRecipes extends React.Component<{}, IListRecipesState> {
     readonly state: IListRecipesState = {
         dialogType: '',
-        recipeName: '',
-        recipeIngredients: '',
-        recipeDirections: '',
+        name: '',
+        ingredients: '',
+        directions: '',
         recipesListElements: [],
         recipesList: {},
         recipeKey: '',
@@ -114,9 +108,9 @@ export default class ListRecipes extends React.Component<{}, IListRecipesState> 
         this.setState({
             isModalOpen: true,
             dialogType,
-            recipeName: dialogRecipeData.name,
-            recipeIngredients: dialogRecipeData.ingredients,
-            recipeDirections: dialogRecipeData.directions,
+            name: dialogRecipeData.name,
+            ingredients: dialogRecipeData.ingredients,
+            directions: dialogRecipeData.directions,
             recipeKey
         });
     }
@@ -171,9 +165,9 @@ export default class ListRecipes extends React.Component<{}, IListRecipesState> 
                 </div>
                 <Dialog
                     dialogType={this.state.dialogType}
-                    oldRecipeName={this.state.recipeName}
-                    oldRecipeDirections={this.state.recipeDirections}
-                    oldRecipeIngredients={this.state.recipeIngredients}
+                    currentName={this.state.name}
+                    currentDirections={this.state.directions}
+                    currentIngredients={this.state.ingredients}
                     recipesList={this.state.recipesList}
                     recipeKey={this.state.recipeKey}
                     isModalOpen={this.state.isModalOpen}

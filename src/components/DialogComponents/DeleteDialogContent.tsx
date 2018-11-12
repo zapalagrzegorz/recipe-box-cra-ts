@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { CancelDialogButton } from './CancelDialogButton';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import { IRecipeObj } from "../ListRecipes";
 
 const typographyProps = {
     variant: "subheading" as "subheading",
@@ -12,50 +13,33 @@ const typographyProps = {
     paragraph: true
 }
 
-interface IDeleteDialogContentProps {
-    recipeName: string,
-    dialogIngredients: string,
-    directions: string,
-    deleteRecipe(event: React.MouseEvent<HTMLElement>) : void,
-    hideDialog(event: React.MouseEvent<HTMLElement>) : void,
+interface IDeleteDialogContentProps extends IRecipeObj {
+    deleteRecipe(): void,
+    hideDialog(): void,
 }
 
-export const DeleteDialogContent = (
-    { 
-        recipeName,
-        dialogIngredients,
-        directions,
-        deleteRecipe,
-        hideDialog 
-    }: IDeleteDialogContentProps) => {
+export const DeleteDialogContent = (props: IDeleteDialogContentProps) => {
+    const { name, ingredients, directions, deleteRecipe, hideDialog } = props;
     return (
         <div className="deleteDialogContent">
             <DialogContent>
-                <Typography
-                    {...typographyProps}
-                >
-                    <strong>Title:</strong> {recipeName}
+                <Typography {...typographyProps}>
+                    <strong>Title:</strong> {name}
                 </Typography>
-                <Typography
-                    {...typographyProps}
-                >
-                    <strong>Ingredients:</strong> {dialogIngredients}
+                <Typography {...typographyProps}>
+                    <strong>Ingredients:</strong> {ingredients}
                 </Typography>
-                <Typography
-                    {...typographyProps}
-                >
+                <Typography {...typographyProps}>
                     <strong>Directions:</strong> {directions}
                 </Typography>
             </DialogContent>
             <DialogActions>
                 <DeleteDialogButton deleteRecipe={deleteRecipe} />
                 <CancelDialogButton hideDialog={hideDialog} />
-                );
             </DialogActions>
         </div>
     );
 }
-
 
 interface IDeleteDialogButtonProps {
     deleteRecipe(event: React.MouseEvent<HTMLElement>): void,
@@ -69,7 +53,7 @@ const styles = (theme: any) => ({
     },
 });
 
-const DeleteDialogButtonUnstyled = (props : IDeleteDialogButtonProps) => {
+const DeleteDialogButtonUnstyled = (props: IDeleteDialogButtonProps) => {
     const { deleteRecipe } = props;
     return (
         <Button

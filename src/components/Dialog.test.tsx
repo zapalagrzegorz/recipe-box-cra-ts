@@ -4,7 +4,7 @@ import {
     mount,
     // render 
 } from 'enzyme';
-import { Dialog } from './Dialog';
+import { Dialog, IDialogProps } from './Dialog';
 import { AddDialogContent } from './DialogComponents/AddDialogContent';
 import { EditDialogContent } from './DialogComponents/EditDialogContent';
 // import DialogActions from '@material-ui/core/DialogActions';
@@ -21,11 +21,11 @@ import TextField from '@material-ui/core/TextField';
 
 
 it('passed props to Dialog', () => {
-    const dialogProps = {
+    const dialogProps : IDialogProps = {
         dialogType: 'add',
-        oldRecipeName: '',
-        oldRecipeIngredients: '',
-        oldRecipeDirections: '',
+        currentName: '',
+        currentIngredients: '',
+        currentDirections: '',
         hideDialog: () => { },
         updateRecipesList: () => { },
         recipesList: {},
@@ -39,11 +39,11 @@ it('passed props to Dialog', () => {
 });
 
 it('has AddDialogContent component', () => {
-    const dialogProps = {
+    const dialogProps : IDialogProps = {
         dialogType: 'add',
-        oldRecipeName: '',
-        oldRecipeIngredients: '',
-        oldRecipeDirections: '',
+        currentName: '',
+        currentIngredients: '',
+        currentDirections: '',
         hideDialog: () => { },
         updateRecipesList: () => { },
         recipesList: {},
@@ -61,9 +61,9 @@ it('has AddDialogContent component', () => {
 it('saves recipe via add modal window in Local Storage ', () => {
     const dialogProps = {
         dialogType: 'add',
-        oldRecipeName: '',
-        oldRecipeIngredients: '',
-        oldRecipeDirections: '',
+        currentName: '',
+        currentIngredients: '',
+        currentDirections: '',
         hideDialog: () => { },
         updateRecipesList: () => { },
         recipesList: {},
@@ -85,7 +85,7 @@ it('saves recipe via add modal window in Local Storage ', () => {
             target:
             {
                 value: 'new recipe name',
-                name: 'changedRecipeName'
+                name: 'changedName'
             }
         }
     );
@@ -100,11 +100,11 @@ it('saves recipe via add modal window in Local Storage ', () => {
 });
 
 it('updates recipe via edit modal window in Local Storage', () => {
-    const dialogProps = {
+    const dialogProps : IDialogProps = {
         dialogType: 'edit',
-        oldRecipeName: 'testowy',
-        oldRecipeIngredients: 'składniki testowe',
-        oldRecipeDirections: 'polecenia testowe',
+        currentName: 'testowy',
+        currentIngredients: 'składniki testowe',
+        currentDirections: 'polecenia testowe',
         hideDialog: () => { },
         updateRecipesList: () => { },
         recipesList: {},
@@ -126,7 +126,7 @@ it('updates recipe via edit modal window in Local Storage', () => {
             target:
             {
                 value: 'new recipe name',
-                name: 'changedRecipeName'
+                name: 'changedName'
             }
         }
     );

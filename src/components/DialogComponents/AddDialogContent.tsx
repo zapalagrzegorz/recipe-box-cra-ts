@@ -7,22 +7,17 @@ import TextField from '@material-ui/core/TextField';
 import { CancelDialogButton } from './CancelDialogButton';
 import { PropTypes } from 'node_modules/@material-ui/core/index';
 import Button from '@material-ui/core/Button';
+import { IDialogContentState } from "../Dialog";
 
 interface IAddDialogContentProps {
     hideDialog(): void,
-    saveRecipe(state:IDialogContentState):void
-}
-
-export interface IDialogContentState {
-    changedRecipeName: string,
-    changedIngredients: string,
-    changedDirections: string
+    saveRecipe(state: IDialogContentState): void
 }
 
 export class AddDialogContent extends React.Component<IAddDialogContentProps, IDialogContentState>  {
 
     state: IDialogContentState = {
-        changedRecipeName: "",
+        changedName: "",
         changedIngredients: "",
         changedDirections: ""
     }
@@ -40,8 +35,10 @@ export class AddDialogContent extends React.Component<IAddDialogContentProps, ID
         //     [name]: value
         // });
     }
+
     render() {
         const { saveRecipe, hideDialog } = this.props;
+        const {changedDirections, changedIngredients, changedName} = this.state;
 
         const textFieldProp = {
             type: "text",
@@ -58,21 +55,21 @@ export class AddDialogContent extends React.Component<IAddDialogContentProps, ID
                         id="name"
                         label="Name"
                         name="changedRecipeName"
-                        value={this.state.changedRecipeName}
+                        value={changedName}
                     />
                     <TextField
                         {...textFieldProp}
                         label="Ingredients"
                         id="ingredients"
                         name="changedIngredients"
-                        value={this.state.changedIngredients}
+                        value={changedIngredients}
                     />
                     <TextField
                         {...textFieldProp}
                         label="Directions"
                         id="directions"
                         name="changedDirections"
-                        value={this.state.changedDirections}
+                        value={changedDirections}
                     />
                 </DialogContent>
                 <DialogActions>

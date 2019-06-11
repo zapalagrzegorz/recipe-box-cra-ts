@@ -74,10 +74,17 @@ export default class ListRecipes extends React.Component<{}, IListRecipesState> 
      */
     populateStorage(): void {
         const recipesList = {
-            Bigos: {
-                name: "Bigos",
-                ingredients: "Kapusta, kiełbasa, przyprawy",
-                directions: `Kapustę przepłukać pod bieżącą wodą jeśli jest bardzo kwaśna. Odcisnąć z nadmiaru soku, a następnie poszatkować. Włożyć do dużego garnka i zalać wrzątkiem, dodać śliwki, liście laurowe i ziele angielskie. Dusić, aż zmięknie (ok. 50 minut).\n\nW międzyczasie zalać suszone grzyby wrzątkiem w małym garnuszku.Odstawić.\n\nCebulę podsmażyć aby się zeszkliła.Do podsmażonej cebuli dodać kiełbasę i zesmażyć na rumiano.\n\nW oddzielnym garnku zagotować ok.litr wody.Do wrzątku dodać wołowinę, cielęcinę(lub łopatkę) i boczek.Gotować około 20 minut, a następnie mięso odcedzić.\n\nGdy kapusta będzie już miękka, dodać grzyby(odcedzone i pokrojone na małe kawałki), mięso oraz cebulę z kiełbasą.Gotować na małym ogniu bez przykrycia przez 20 minut.Jeśli jest za dużo wody, należy ją odlać.\n\nDodać czerwone wino i gotować jeszcze 15 minut.Doprawić majerankiem, kminkiem, solą i pieprzem.Dodać przecier pomidorowy(opcjonalnie) i podgrzać jeszcze dobrze całość, mieszając.Jeśli bigos jest zbyt suchy, podlać wodą po grzybach.\n\nJeśli chcemy, by bigos był smaczniejszy, można go jeszcze dusić na małym ogniu pod przykryciem przez godzinę.Należy jednak pilnować, żeby nie przywarł i od czasu do czasu mieszać, a jeśli jest za suchy - podlać wodą z grzybów.`
+            Carbonara: {
+                name: "Spaghetti carbonara na winie",
+                ingredients: "500 g makaronu spaghetti, 200 g wędzonego boczku, 250 ml śmietanki 30%, 3 żółtka, 1 ząbek czosnku, 1 cebula, 100 ml białego, wytrawnego wina
+2 łyżki tartego sera grana padano,  Sól, Pieprz, Bazylia",
+                directions: `Makaron gotujemy w osolonej wodzie. Cedzimy.
+
+Boczek kroimy w drobną kostkę, wrzucamy na rozgrzaną patelnię i podsmażamy, stale mieszając, aż się zrumieni. Cebulę siekamy. Zdejmujemy boczek z patelni i podsmażamy cebulę na tłuszczu, który się z niego wytopił. Do cebuli dodajemy wino. Czosnek drobno siekamy i przekładamy na patelnię. Całość dusimy około 5 minut.
+
+W miseczce mieszamy żółtka, 120 ml śmietany oraz ser. Pozostałą śmietanę wlewamy na patelnię i dodajemy do niej przesmażony wcześniej boczek. Zmniejszamy płomień i dodajemy jajka ze śmietaną i serem. Przyprawiamy solą i pieprzem do smaku. Czekamy aż sos zgęstnieje. Zdejmujemy patelnię z ognia.
+
+Do sosu przekładamy ugotowany makaron i dokładnie mieszamy. Bazylię drobno siekamy i dekorujemy nią spaghetti.`
             },
             Naleśniki: {
                 name: "Naleśniki",

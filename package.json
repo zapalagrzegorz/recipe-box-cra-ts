@@ -4,11 +4,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^1.5.1",
-    "@material-ui/icons": "^1.1.0",
+    "@material-ui/core": "^4.1.0",
+    "@material-ui/icons": "^1.1.1",
     "gh-pages": "^2.0.1",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-scripts-ts": "2.x"
   },
   "scripts": {
@@ -22,16 +22,16 @@
   },
   "devDependencies": {
     "@babel/runtime": "7.0.0-beta.55",
-    "@types/enzyme": "^3.1.14",
-    "@types/enzyme-adapter-react-16": "^1.0.3",
-    "@types/jest": "^23.3.5",
-    "@types/node": "^10.7.1",
-    "@types/react": "^16.4.11",
-    "@types/react-dom": "^16.0.7",
-    "@types/react-test-renderer": "^16.0.3",
-    "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.6.0",
-    "react-test-renderer": "^16.5.2",
-    "typescript": "^3.0.1"
+    "@types/enzyme": "^3.9.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^23.3.14",
+    "@types/node": "^10.14.9",
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-test-renderer": "^16.8.1",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "react-test-renderer": "^16.8.6",
+    "typescript": "^3.5.1"
   }
 }

@@ -8,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { IRecipeObj } from "../ListRecipes";
 
 const typographyProps = {
-    variant: "subheading" as "subheading",
     gutterBottom: true,
     paragraph: true
 }

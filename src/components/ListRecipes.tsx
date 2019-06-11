@@ -76,23 +76,22 @@ export default class ListRecipes extends React.Component<{}, IListRecipesState> 
         const recipesList = {
             Carbonara: {
                 name: "Spaghetti carbonara na winie",
-                ingredients: "500 g makaronu spaghetti, 200 g wędzonego boczku, 250 ml śmietanki 30%, 3 żółtka, 1 ząbek czosnku, 1 cebula, 100 ml białego, wytrawnego wina
-2 łyżki tartego sera grana padano,  Sól, Pieprz, Bazylia",
+                ingredients: `500 g makaronu spaghetti, 200 g wędzonego boczku, 250 ml śmietanki 30%, 3 żółtka, 1 ząbek czosnku, 1 cebula, 100 ml białego, wytrawnego wina, 2 łyżki tartego sera grana padano,  Sól, Pieprz, Bazylia`,
                 directions: `Makaron gotujemy w osolonej wodzie. Cedzimy.
 
-Boczek kroimy w drobną kostkę, wrzucamy na rozgrzaną patelnię i podsmażamy, stale mieszając, aż się zrumieni. Cebulę siekamy. Zdejmujemy boczek z patelni i podsmażamy cebulę na tłuszczu, który się z niego wytopił. Do cebuli dodajemy wino. Czosnek drobno siekamy i przekładamy na patelnię. Całość dusimy około 5 minut.
+                            Boczek kroimy w drobną kostkę, wrzucamy na rozgrzaną patelnię i podsmażamy, stale mieszając, aż się zrumieni. Cebulę siekamy. Zdejmujemy boczek z patelni i podsmażamy cebulę na tłuszczu, który się z niego wytopił. Do cebuli dodajemy wino. Czosnek drobno siekamy i przekładamy na patelnię. Całość dusimy około 5 minut.
 
-W miseczce mieszamy żółtka, 120 ml śmietany oraz ser. Pozostałą śmietanę wlewamy na patelnię i dodajemy do niej przesmażony wcześniej boczek. Zmniejszamy płomień i dodajemy jajka ze śmietaną i serem. Przyprawiamy solą i pieprzem do smaku. Czekamy aż sos zgęstnieje. Zdejmujemy patelnię z ognia.
+                            W miseczce mieszamy żółtka, 120 ml śmietany oraz ser. Pozostałą śmietanę wlewamy na patelnię i dodajemy do niej przesmażony wcześniej boczek. Zmniejszamy płomień i dodajemy jajka ze śmietaną i serem. Przyprawiamy solą i pieprzem do smaku. Czekamy aż sos zgęstnieje. Zdejmujemy patelnię z ognia.
 
-Do sosu przekładamy ugotowany makaron i dokładnie mieszamy. Bazylię drobno siekamy i dekorujemy nią spaghetti.`
+                            Do sosu przekładamy ugotowany makaron i dokładnie mieszamy. Bazylię drobno siekamy i dekorujemy nią spaghetti.`
             },
             Naleśniki: {
-                name: "Naleśniki",
+                name: "Naleśniki w wersji studenckiej",
                 ingredients: "Mąka, mleko, woda, sól, pieprz, dodatki",
                 directions: `Mąkę wsypać do miski, dodać jajka, mleko, wodę i sól. Zmiksować na gładkie ciasto. Dodać roztopione masło lub olej roślinny i razem zmiksować (lub wykorzystać tłuszcz do smarowania patelni przed smażeniem każdego naleśnika).\n \nNaleśniki smażyć na dobrze rozgrzanej patelni z cienkim dnem np. naleśnikowej. Przewrócić na drugą stronę gdy spód naleśnika będzie już ładnie zrumieniony i ścięty.\n \nWSKAZÓWKI\n \nDo naleśników deserowych można dodać 1 łyżkę cukru.`
             },
             Schabowy: {
-                name: "Schabowy",
+                name: "Tradycyjny niedzielny schabowy z polskiej ściany wschodniej ",
                 ingredients: "Mięso, ziemniaki, surówka",
                 directions: `Ostrym nożem odciąć białą otoczkę z żyłki po zewnętrznej części mięsa. Pokroić na 4 plastry. Położyć na desce i dokładnie roztłuc na cieniutkie filety (mogą wyjść duże, wielkości pół talerza). Do rozbicia mięsa najlepiej użyć specjalnego tłuczka z metalowym obiciem z wytłoczoną krateczką.\n\nFilety namoczyć w mleku z dodatkiem soli i pieprzu(ewentualnie z dodatkiem kilku plastrów cebuli) przez ok. 2 godziny lub dłużej jeśli mamy czas(można też zostawić do namoczenia na noc).\n\nWyjąć filety z mleka i osuszyć je papierowymi ręcznikami.Doprawić solą(niezbyt dużo, bo zalewa z mleka była już solona) i pieprzem, obtoczyć w mące, następnie w roztrzepanym jajku, a na koniec w bułce tartej.\n\nNa patelni rozgrzać klarowane masło(ok. 1 / 2 cm warstwa) lub smalec.Smażyć partiami po 2 kotlety, na większym ogniu, po 2 minuty z każdej strony.Następnie zmniejszyć ogień i smażyć jeszcze po ok. 3 minuty z każdej strony.Przetrzeć patelnię papierowym ręcznikiem i powtórzyć z kolejną partią, na świeżym tłuszczu.\n\nUsmażone schabowe odsączyć z tłuszczu na papierowym ręczniku i podawać z ziemniakami i kapustą lub mizerią.`
             },
@@ -145,7 +144,6 @@ Do sosu przekładamy ugotowany makaron i dokładnie mieszamy. Bazylię drobno si
                         <Card>
                             <CardContent>
                                 <Typography
-                                    variant="display1"
                                     align="center"
                                     gutterBottom={true}
                                 >Recipe box</Typography>
